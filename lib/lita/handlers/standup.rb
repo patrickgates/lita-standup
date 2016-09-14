@@ -1,6 +1,8 @@
 module Lita
   module Handlers
     class Standup < Handler
+      scheduler = Rufus::Scheduler.new
+      
       # General settings
       config :time_to_respond, types: [Integer, Float], default: 60 #minutes
       config :summary_email_recipients, type: Array, default: ['you@company.com'], required: true
@@ -19,6 +21,10 @@ module Lita
 
       route %r{^start standup now}i, :begin_standup, command: true, restrict_to: :standup_admins
       route %r{standup response (1.*)(2.*)(3.*)}i, :process_standup, command: true
+      
+      scheduler.schedule("0 9 * * 1-5") do
+        begin_standup(true)
+      end
 
       def begin_standup(request)
         redis.set('last_standup_started_at', Time.now)
