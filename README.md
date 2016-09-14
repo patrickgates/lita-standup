@@ -26,6 +26,7 @@ Lita.configure do |config|
   config.handlers.standup.time_to_respond =           60  # type: Integer, default: 60 (minutes)
   config.handlers.standup.summary_email_recipients =  ['you@company.com', 'me@company.com'] # type: Array, required: true
   config.handlers.standup.name_of_auth_group =        :standup_participants   # type: Symbol, required: true
+  config.handlers.standup.cron_time =        "00 9 * * 1-5" # type: String, when to run the scheduler
 
   ## SMTP Mailer settings
   config.handlers.standup.address =              'smtp.gmail.com' # type: String, required: true
@@ -51,6 +52,8 @@ To start the standup, give Lita the command ```Lita: start standup now```.
 You'll get a private message asking for your answer.  Reply in the typical format (using numbers and colons) with 1: things you worked on yesterday, 2: things you'll be doing today, and 3: anything that's blocking you.  Example :```Lita: standup response 1: Finished this gem. 2: Make these docs a little better. 3: Wife is making cookies and it's hard to focus.```
 
 After the ```time_to_respond``` has elapsed, Lita will compile an email of the responses and send it to all the people in ```summary_email_recipients```.
+
+To run a scheduled daily standup, run ```Lita start standup scheduler```
 
 ## Bugs, Comments, feature requests
 
