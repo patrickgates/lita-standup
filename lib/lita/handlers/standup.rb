@@ -5,6 +5,7 @@ module Lita
       config :time_to_respond, types: [Integer, Float], default: 60 #minutes
       config :summary_email_recipients, type: Array, default: ['you@company.com'], required: true
       config :name_of_auth_group, type: Symbol, default: :standup_participants, required: true
+      config :cron_time, type: String, default: "00 9 * * 1-5"
 
       ## SMTP Mailer Settings ##
       config :address, type: String, required: true
@@ -39,7 +40,7 @@ module Lita
       def start_scheduler(request)
         scheduler = Rufus::Scheduler.new
         
-        scheduler.schedule("19 1 * * 1-5") do
+        scheduler.schedule(config.cron_time) do
           begin_standup(request)
         end
         
